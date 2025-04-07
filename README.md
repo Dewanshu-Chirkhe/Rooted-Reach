@@ -1,73 +1,35 @@
-# Welcome to your Lovable project
+# 🌱 Rooted Reach
 
-## Project info
+**Rooted Reach** is a heartfelt e-commerce platform built to empower **mentally challenged children** by helping them sell their handmade art and craft items — including handbags, book bindings, home decor pieces, and more. This web application serves as a bridge between these talented individuals and compassionate customers who value creativity and purpose.
 
-**URL**: https://lovable.dev/projects/af3cc592-b023-4fdc-a1d5-284292b6f4e0
+---
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- 🏠 **Home Page**  
+  Introduction to the mission of Rooted Reach and highlights of featured products.
 
-**Use Lovable**
+- 🛍️ **Products Page**  
+  Browse all available handmade items with search and optional category filters.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/af3cc592-b023-4fdc-a1d5-284292b6f4e0) and start prompting.
+- 🛒 **Cart Page**  
+  Add products to the cart, manage quantities, and view total cost.
 
-Changes made via Lovable will be committed automatically to this repo.
+- ➕ **Add Product Page** (Admin/NGO)  
+  Upload new items through a simple form with name, image, price, and category.
 
-**Use your preferred IDE**
+- 📖 **About Page**  
+  Learn more about the mission behind Rooted Reach and how to get in touch or support the cause.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- 🌐 **Navigation Bar**  
+  Easy access to all parts of the platform via a clean and persistent navbar.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 🧱 Tech Stack
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/af3cc592-b023-4fdc-a1d5-284292b6f4e0) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- **Frontend**: React (JavaScript)
+- **Backend**: Node.js
+- **Styling**: Tailwind CSS / CSS Modules / your preferred library
+- **Image Handling**: local storage
+- **Hosting**: Vercel 
