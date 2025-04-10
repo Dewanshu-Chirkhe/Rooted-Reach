@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart, Menu, X, User, LogOut } from "lucide-react";
@@ -21,12 +20,14 @@ const Navbar = () => {
     const navigate = useNavigate();
     const { getTotalItems } = useCart();
     const { state: authState, signOut } = useAuth();
+    const { clearCart } = useCart();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
     const handleSignOut = () => {
+        clearCart();
         signOut();
         navigate("/");
     };
@@ -44,7 +45,7 @@ const Navbar = () => {
 
     const getInitials = (username: string) => {
         if (!username) return "";
-        
+
         return username
             .split(" ")
             .map((n) => n[0])
@@ -85,30 +86,43 @@ const Navbar = () => {
                         {authState.isAuthenticated ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="relative p-2">
-                                        <Avatar className="h-8 w-8 bg-terracotta/20 text-terracotta">
-                                            <AvatarFallback>
-                                                {getInitials(authState.user?.username || "")}
+                                    <Button
+                                        variant="ghost"
+                                        className="relative p-2"
+                                    >
+                                        <Avatar className="h-8 w-8 bg-sage text-deep_charcoal font-semibold">
+                                            <AvatarFallback className="bg-sage text-deep_charcoal">
+                                                {getInitials(
+                                                    authState.user?.username ||
+                                                        ""
+                                                )}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <span className="ml-2 text-sm font-medium max-w-[120px] truncate hidden sm:inline-block">
-                                            {authState.user?.username}
-                                        </span>
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-white shadow-md border border-gray-200">
+                                <DropdownMenuContent
+                                    align="end"
+                                    className="bg-white shadow-md border border-gray-200"
+                                >
                                     <DropdownMenuLabel className="text-black">
                                         {authState.user?.username}
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-black">
+                                    <DropdownMenuItem
+                                        onClick={handleSignOut}
+                                        className="cursor-pointer text-black"
+                                    >
                                         <LogOut className="mr-2 h-4 w-4" />
                                         Sign out
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant="ghost" onClick={() => navigate("/auth")} className="p-2">
+                            <Button
+                                variant="ghost"
+                                onClick={() => navigate("/auth")}
+                                className="p-2"
+                            >
                                 <User className="h-5 w-5" />
                             </Button>
                         )}
@@ -117,7 +131,7 @@ const Navbar = () => {
                             <Button variant="ghost" className="relative p-2">
                                 <ShoppingCart className="h-5 w-5" />
                                 {getTotalItems() > 0 && (
-                                    <span className="absolute -top-1 -right-1 bg-terracotta text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                    <span className="absolute -top-1 -right-1 bg-terracotta text-red-500 text-xs rounded-full h-5 w-5 flex items-center justify-center">
                                         {getTotalItems()}
                                     </span>
                                 )}
