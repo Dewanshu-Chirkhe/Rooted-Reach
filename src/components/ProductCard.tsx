@@ -1,8 +1,11 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Product } from "@/context/CartContext";
 import { useCart } from "@/context/CartContext";
 import { ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 interface ProductCardProps {
     product: Product;
@@ -10,8 +13,17 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
     const { addToCart } = useCart();
+    const { state: authState } = useAuth();
+    const navigate = useNavigate();
 
     const handleAddToCart = () => {
+        // If user is not authenticated, redirect to auth page
+        if (!authState.isAuthenticated) {
+            navigate("/auth");
+            return;
+        }
+        
+        // User is authenticated, add to cart
         addToCart(product);
     };
 

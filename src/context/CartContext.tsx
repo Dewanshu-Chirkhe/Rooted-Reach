@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export interface Product {
     id: string;
@@ -32,7 +33,7 @@ type CartAction =
 
 interface CartContextType {
     state: CartState;
-    addToCart: (product: Product, quantity?: number) => void;
+    addToCart: (product: Product, quantity?: number, shouldRedirect?: boolean) => void;
     removeFromCart: (productId: string) => void;
     updateQuantity: (productId: string, quantity: number) => void;
     clearCart: () => void;
@@ -105,15 +106,17 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
     const [state, dispatch] = useReducer(cartReducer, { items: [] });
     const { state: authState } = useAuth();
+    // We don't have access to useNavigate here because this is a context provider
+    // Navigation will be handled in the component using this context
 
-    const addToCart = (product: Product, quantity = 1) => {
+    const addToCart = (product: Product, quantity = 1, shouldRedirect = true) => {
         if (!authState.isAuthenticated) {
             toast({
                 title: "Authentication required",
                 description: "Please sign in to add items to your cart.",
                 variant: "destructive",
             });
-            return;
+            return false; // Return false to indicate authentication required
         }
 
         dispatch({ type: "ADD_ITEM", payload: { product, quantity } });
@@ -121,6 +124,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
             title: "Added to cart",
             description: `${product.name} has been added to your cart.`,
         });
+        return true; // Return true to indicate successful addition
     };
 
     const removeFromCart = (productId: string) => {
