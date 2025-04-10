@@ -85,14 +85,17 @@ const Navbar = () => {
                                                 {authState.user && getInitials(authState.user.username)}
                                             </AvatarFallback>
                                         </Avatar>
+                                        <span className="ml-2 text-sm font-medium max-w-[120px] truncate hidden sm:inline-block">
+                                            {authState.user?.username}
+                                        </span>
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>
+                                <DropdownMenuContent align="end" className="bg-white shadow-md border border-gray-200">
+                                    <DropdownMenuLabel className="text-black">
                                         {authState.user?.username}
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-black">
                                         <LogOut className="mr-2 h-4 w-4" />
                                         Sign out
                                     </DropdownMenuItem>
