@@ -1,16 +1,34 @@
+
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ShoppingCart, Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
     const { getTotalItems } = useCart();
+    const { state: authState, signOut } = useAuth();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    };
+
+    const handleSignOut = () => {
+        signOut();
+        navigate("/");
     };
 
     const navLinks = [
@@ -19,6 +37,14 @@ const Navbar = () => {
         { name: "About", path: "/about" },
         { name: "Add Product", path: "/add-product" },
     ];
+
+    const getInitials = (username: string) => {
+        return username
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase();
+    };
 
     return (
         <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -48,13 +74,41 @@ const Navbar = () => {
                         ))}
                     </div>
 
-                    {/* Cart Button */}
-                    <div className="flex items-center">
+                    {/* Auth & Cart Buttons */}
+                    <div className="flex items-center space-x-2">
+                        {authState.isAuthenticated ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="relative p-2">
+                                        <Avatar className="h-8 w-8 bg-terracotta/20 text-terracotta">
+                                            <AvatarFallback>
+                                                {authState.user && getInitials(authState.user.username)}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>
+                                        {authState.user?.username}
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                                        <LogOut className="mr-2 h-4 w-4" />
+                                        Sign out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <Button variant="ghost" onClick={() => navigate("/auth")} className="p-2">
+                                <User className="h-5 w-5" />
+                            </Button>
+                        )}
+
                         <Link to="/cart">
                             <Button variant="ghost" className="relative p-2">
                                 <ShoppingCart className="h-5 w-5" />
                                 {getTotalItems() > 0 && (
-                                    <span className="absolute -top-1 -right-1 bg-terracotta text-red-500 text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                    <span className="absolute -top-1 -right-1 bg-terracotta text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                                         {getTotalItems()}
                                     </span>
                                 )}
@@ -62,7 +116,7 @@ const Navbar = () => {
                         </Link>
 
                         {/* Mobile Menu Button */}
-                        <div className="md:hidden ml-2">
+                        <div className="md:hidden">
                             <Button
                                 variant="ghost"
                                 onClick={toggleMenu}
@@ -96,6 +150,15 @@ const Navbar = () => {
                                     {link.name}
                                 </Link>
                             ))}
+                            {!authState.isAuthenticated && (
+                                <Link
+                                    to="/auth"
+                                    className="py-2 px-4 rounded-md font-medium transition-colors text-deep_charcoal hover:bg-sage/10"
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    Sign In / Sign Up
+                                </Link>
+                            )}
                         </div>
                     </div>
                 )}

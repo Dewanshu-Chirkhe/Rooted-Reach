@@ -1,5 +1,7 @@
+
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "./AuthContext";
 
 export interface Product {
     id: string;
@@ -102,8 +104,18 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     children,
 }) => {
     const [state, dispatch] = useReducer(cartReducer, { items: [] });
+    const { state: authState } = useAuth();
 
     const addToCart = (product: Product, quantity = 1) => {
+        if (!authState.isAuthenticated) {
+            toast({
+                title: "Authentication required",
+                description: "Please sign in to add items to your cart.",
+                variant: "destructive",
+            });
+            return;
+        }
+
         dispatch({ type: "ADD_ITEM", payload: { product, quantity } });
         toast({
             title: "Added to cart",
