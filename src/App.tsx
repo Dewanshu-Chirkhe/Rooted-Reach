@@ -27,6 +27,18 @@ const Loading = () => (
     </div>
 );
 
+// Protected Route component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+    // Get auth state from localStorage to avoid circular dependency
+    const isAuthenticated = localStorage.getItem("user") !== null;
+    
+    if (!isAuthenticated) {
+        return <Navigate to="/auth" replace />;
+    }
+    
+    return <>{children}</>;
+};
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -53,7 +65,11 @@ const App = () => (
                                         />
                                         <Route
                                             path="/add-product"
-                                            element={<AddProductPage />}
+                                            element={
+                                                <ProtectedRoute>
+                                                    <AddProductPage />
+                                                </ProtectedRoute>
+                                            }
                                         />
                                         <Route
                                             path="/about"

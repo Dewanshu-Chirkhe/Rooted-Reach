@@ -35,10 +35,16 @@ const Navbar = () => {
         { name: "Home", path: "/" },
         { name: "Products", path: "/products" },
         { name: "About", path: "/about" },
-        { name: "Add Product", path: "/add-product" },
     ];
 
+    // Add the "Add Product" link only if user is authenticated
+    if (authState.isAuthenticated) {
+        navLinks.push({ name: "Add Product", path: "/add-product" });
+    }
+
     const getInitials = (username: string) => {
+        if (!username) return "";
+        
         return username
             .split(" ")
             .map((n) => n[0])
@@ -82,7 +88,7 @@ const Navbar = () => {
                                     <Button variant="ghost" className="relative p-2">
                                         <Avatar className="h-8 w-8 bg-terracotta/20 text-terracotta">
                                             <AvatarFallback>
-                                                {authState.user && getInitials(authState.user.username)}
+                                                {getInitials(authState.user?.username || "")}
                                             </AvatarFallback>
                                         </Avatar>
                                         <span className="ml-2 text-sm font-medium max-w-[120px] truncate hidden sm:inline-block">
